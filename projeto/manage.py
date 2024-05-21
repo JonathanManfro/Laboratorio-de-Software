@@ -16,6 +16,8 @@ def main():
             "forget to activate a virtual environment?"
         ) from exc
     execute_from_command_line(sys.argv)
+    from scripts.create_admin import create_admin_user
+    create_admin_user()
 
 
 if __name__ == '__main__':

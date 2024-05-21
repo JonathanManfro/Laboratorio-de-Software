@@ -1,9 +1,15 @@
 <!DOCTYPE html>
 <html lang="en">
+
 <head>
     <meta charset="UTF-8">
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
     <title>Laboratorio de Software</title>
+    <script src="https://code.jquery.com/jquery-3.5.1.slim.min.js"></script>
+    <script src="https://cdn.jsdelivr.net/npm/popper.js@1.16.0/dist/umd/popper.min.js"></script>
+    <script src="https://maxcdn.bootstrapcdn.com/bootstrap/4.5.2/js/bootstrap.min.js"></script>
+    <script src="https://ajax.googleapis.com/ajax/libs/jquery/3.5.1/jquery.min.js"></script>
+    {% csrf_token %}
     {% load static %}
     <style>
         body {
@@ -15,16 +21,20 @@
             margin: 0;
             font-family: Arial, sans-serif;
         }
+
         .container {
             text-align: center;
         }
+
         .image {
             margin-bottom: 20px;
         }
+
         .buttons {
             display: flex;
             flex-direction: column;
         }
+
         .buttons a {
             text-decoration: none;
             color: white;
@@ -34,18 +44,157 @@
             border-radius: 5px;
             transition: background-color 0.3s;
         }
+
         .buttons a:hover {
             background-color: #0056b3;
         }
     </style>
+    <link rel="stylesheet" href="https://maxcdn.bootstrapcdn.com/bootstrap/4.5.2/css/bootstrap.min.css">
 </head>
+
 <body>
+    {% csrf_token %}
     <div class="container">
         <img src="{% static 'projetolab/imagem.png' %}" alt="Imagem Central" class="image">
         <div class="buttons">
-            <a href="">Login</a>
-            <a href="">Cadastrar Usuários (Admin)</a>
+            <a href="#" data-toggle="modal" data-target="#userModal">Login</a>
+            <a href="#" data-toggle="modal" data-target="#adminModal">Cadastrar Usuários (Admin)</a>
+        </div>
+    </div>
+
+    <!--Modal Login Usuario-->
+    <div class="modal fade" id="userModal" tabindex="-1" role="dialog" aria-labelledby="userModalLabel"
+        aria-hidden="true">
+        <div class="modal-dialog" role="document">
+            <div class="modal-content">
+                <div class="modal-header">
+                    <h5 class="modal-title" id="adminModalLabel">Login Usuário</h5>
+                    <button type="button" class="close" data-dismiss="modal" aria-label="Fechar">
+                        <span aria-hidden="true">&times;</span>
+                    </button>
+                </div>
+                <div class="modal-body">
+                    <form>
+                        <div class="form-group">
+                            <label for="username">Usuário</label>
+                            <input type="text" class="form-control" id="usernameUser" placeholder="Nome de usuário">
+                        </div>
+                        <div class="form-group">
+                            <label for="password">Senha</label>
+                            <input type="password" class="form-control" id="passwordUser" placeholder="Senha">
+                        </div>
+                        <button id="submitBtnUser" type="submit" class="btn btn-primary">Login</button>
+                    </form>
+                </div>
+            </div>
+        </div>
+    </div>
+
+    <!--Modal Login Admin-->
+    <div class="modal fade" id="adminModal" tabindex="-1" role="dialog" aria-labelledby="adminModalLabel"
+        aria-hidden="true">
+        <div class="modal-dialog" role="document">
+            <div class="modal-content">
+                <div class="modal-header">
+                    <h5 class="modal-title" id="adminModalLabel">Login Usuário Admin</h5>
+                    <button type="button" class="close" data-dismiss="modal" aria-label="Fechar">
+                        <span aria-hidden="true">&times;</span>
+                    </button>
+                </div>
+                <div class="modal-body">
+                    <form>
+                        <div class="form-group">
+                            <label for="username">Usuário</label>
+                            <input type="text" class="form-control" id="usernameAdmin" placeholder="Usuário Admin">
+                        </div>
+                        <div class="form-group">
+                            <label for="password">Senha</label>
+                            <input type="password" class="form-control" id="passwordAdmin" placeholder="Senha">
+                        </div>
+                        <button id="submitBtnAdmin" type="submit" class="btn btn-primary">Login</button>
+                    </form>
+                </div>
+            </div>
+        </div>
+    </div>
+
+    <!--Modal Usuario cadastrado com sucesso-->
+    <div class="modal fade" id="successModal" tabindex="-1" role="dialog" aria-labelledby="successModalLabel"
+        aria-hidden="true">
+        <div class="modal-dialog" role="document">
+            <div class="modal-content">
+                <div class="modal-header">
+                    <h5 class="modal-title" id="successModalLabel">Sucesso!</h5>
+                    <button type="button" class="close" data-dismiss="modal" aria-label="Close">
+                        <span aria-hidden="true">&times;</span>
+                    </button>
+                </div>
+                <div class="modal-body">
+                    Usuário cadastrado com sucesso!
+                </div>
+            </div>
         </div>
     </div>
 </body>
+<script>
+    $(document).ready(function () {
+        $('#submitBtnAdmin').click(function (e) {
+            e.preventDefault();
+
+            var username = $('#usernameAdmin').val();
+            var password = $('#passwordAdmin').val();
+            var csrfToken = $('input[name="csrfmiddlewaretoken"]').val(); 
+
+            $.ajax({
+                type: 'POST',
+                url: '/login/',
+                headers: { 'X-CSRFToken': csrfToken },
+                data: {
+                    'username': username,
+                    'password': password,
+                    'is_admin': 1,
+                },
+                success: function (data) {
+                    if (data.success) {
+                        window.location.href = '/cadastrar_usuario';
+                    } else {
+                        alert('Nome de usuário ou senha incorretos.');
+                    }
+                }
+            });
+        });
+
+        $('#submitBtnUser').click(function (e) {
+            e.preventDefault();
+
+            var username = $('#usernameUser').val();
+            var password = $('#passwordUser').val();
+            var csrfToken = $('input[name="csrfmiddlewaretoken"]').val(); 
+
+            $.ajax({
+                type: 'POST',
+                url: '/login/',
+                headers: { 'X-CSRFToken': csrfToken },
+                data: {
+                    'username': username,
+                    'password': password,
+                    'is_admin': 0,
+                },
+                success: function (data) {
+                    if (data.success) {
+                        window.location.href = '/tela_usuario';
+                    } else {
+                        alert('Nome de usuário ou senha incorretos.');
+                    }
+                }
+            });
+        });
+
+        var success = "{{ request.GET.success }}";
+        if (success === "true") {
+            $('#successModal').modal('show');
+        }
+    });
+</script>
+
 </html>

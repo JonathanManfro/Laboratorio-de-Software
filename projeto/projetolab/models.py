@@ -37,8 +37,11 @@ class Projeto(models.Model):
 class Usuario(models.Model):
     id = models.AutoField(primary_key=True)
     nome = models.CharField(max_length=100)
-    endereco = models.CharField(max_length=255)
+    email = models.EmailField(max_length=255)
+    area_de_atuacao = models.CharField(max_length=255)
     tipo_usuario = models.CharField(max_length=100)
+    usuario = models.CharField(max_length=100)
+    senha = models.CharField(max_length=100)
 
     def cadastrar_usuario(self):
         pass
