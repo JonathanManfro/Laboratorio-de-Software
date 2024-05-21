@@ -1,6 +1,6 @@
 from django.shortcuts import render, redirect
 from django.http import HttpResponseRedirect
-from .models import Usuario
+from .models import Usuario, Projeto
 from django.urls import reverse
 from django.http import JsonResponse
 
@@ -55,3 +55,27 @@ def login_view(request):
 
 def tela_usuario(request):
     return render(request, 'tela_usuario.html')
+
+def cadastrar_projetos(request):
+    if request.method == 'GET':
+        return render(request, 'cadastro_projetos.html')
+    
+    elif request.method == 'POST':
+
+        titulo = request.POST.get('titulo')
+        descricao = request.POST.get('descricao')
+        participantes = request.POST.get('participantes') 
+        objetivos = request.POST.get('objetivos') 
+        resultados = request.POST.get('resultados')  
+
+        projeto_obj = Projeto()
+
+        projeto_obj.titulo = titulo
+        projeto_obj.descricao = descricao
+        projeto_obj.participantes = participantes
+        projeto_obj.objetivos = objetivos
+        projeto_obj.resultados = resultados
+
+        projeto_obj.save()
+
+        return HttpResponseRedirect(reverse('tela_usuario') + '?success=true')

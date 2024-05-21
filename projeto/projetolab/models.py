@@ -32,7 +32,11 @@ class Producao(models.Model):
 
 class Projeto(models.Model):
     id = models.AutoField(primary_key=True)
-    nome = models.CharField(max_length=255)
+    titulo = models.CharField(max_length=255)
+    descricao = models.CharField(max_length=255)
+    participantes = models.CharField(max_length=255)
+    objetivos = models.CharField(max_length=255)
+    resultados = models.CharField(max_length=255)
 
 class Usuario(models.Model):
     id = models.AutoField(primary_key=True)

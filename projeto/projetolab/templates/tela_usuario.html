@@ -54,10 +54,18 @@
     <div class="container">
         <img src="{% static 'projetolab/imagem.png' %}" alt="Imagem Central" class="image">
         <div class="buttons">
-            <a href="#">Cadastrar Projetos</a>
+            <a href="/cadastrar_projeto">Cadastrar Projetos</a>
         </div>
     </div>
 </body>
+
+<script>
+
+    var success = "{{ request.GET.success }}";
+    if (success === "true") {
+        $('#successModal').modal('show');
+    }
+</script>
 
 
 </html>

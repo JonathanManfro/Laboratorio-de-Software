@@ -1,0 +1,45 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Cadastro de Usuário</title>
+    <link rel="stylesheet" href="https://maxcdn.bootstrapcdn.com/bootstrap/4.5.2/css/bootstrap.min.css">
+</head>
+<body>
+    <div class="container mt-5">
+        <h2>Cadastro de Projetos</h2>
+        <form id="cadastroForm" method="post">
+            {% csrf_token %}
+            <div class="form-group">
+                <label for="nome">Título:</label>
+                <input type="text" class="form-control" id="titulo" name="titulo" required>
+            </div>
+            <div class="form-group">
+                <label for="descricao">Descrição:</label>
+                <input type="descricao" class="form-control" id="descricao" name="descricao" required>
+            </div>
+            <div class="form-group">
+                <label for="participantes">Participantes:</label>
+                <input type="text" class="form-control" id="participantes" name="participantes" required>
+            </div>
+            <div class="form-group">
+                <label for="objetivos">Objetivos:</label>
+                <input type="text" class="form-control" id="objetivos" name="objetivos" required>
+            </div>
+            <div class="form-group">
+                <label for="resultados">Resultados:</label>
+                <input type="text" class="form-control" id="resultados" name="resultados" required>
+            </div>
+            <button type="button" class="btn btn-primary" id="btnCadastrar">Cadastrar</button>
+            <a href="/" class="btn btn-secondary">Voltar</a>
+        </form>
+    </div>
+
+    <script>
+        document.getElementById("btnCadastrar").addEventListener("click", function() {
+            document.getElementById("cadastroForm").submit();
+        });
+    </script>
+</body>
+</html>
