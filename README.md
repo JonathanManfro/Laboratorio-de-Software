@@ -51,3 +51,9 @@ python manage.py runserver
 ```
 
 Isso iniciará o servidor local em http://127.0.0.1:8000/. Você pode acessar esta URL no seu navegador para visualizar o projeto em execução.
+
+## Iniciando o Cadastro de Usuários
+
+Para iniciar o cadastro de usuários, utilize as credenciais do usuário administrador pré-cadastrado:
+- **Usuário:** admin
+- **Senha:** admin
