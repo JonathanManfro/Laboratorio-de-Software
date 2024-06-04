@@ -16,7 +16,7 @@ def main():
             "forget to activate a virtual environment?"
         ) from exc
     execute_from_command_line(sys.argv)
-    from projeto.scripts.populate_tables import create_admin_user, populate_area_de_pesquisa
+    from scripts.populate_tables import create_admin_user, populate_area_de_pesquisa
     create_admin_user()
     populate_area_de_pesquisa()
 

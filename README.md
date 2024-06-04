@@ -1,16 +1,53 @@
 # Projeto Laboratório de Software
 
-## Primeiro Passo
-Para começar a trabalhar no projeto, é necessário configurar e ativar o ambiente virtual (venv). Siga os passos abaixo:
+Aqui estão os passos necessários para configurar o ambiente de desenvolvimento e começar a trabalhar no projeto.
 
-1. Instale a venv com o comando:
+## Pré-Requisitos
 
-python -m venv venv
+Certifique-se de ter o Python 3.9 ou superior instalado no seu sistema.
 
-2. Ative a venv dentro da raiz do projeto com o comando:
+## Configuração do Ambiente Virtual
 
-venv\Scripts\activate.bat
+1. Instale a dependência `virtualenv`:
+    ```bash
+    pip install virtualenv
+    ```
 
-3. Após ativar a venv, é hora de instalar as dependências do projeto. Execute o seguinte comando:
+2. Crie o ambiente virtual:
+    ```bash
+    python -m venv venv
+    ```
 
+3. Ative o ambiente virtual:
+    - No Windows:
+        ```bash
+        venv\Scripts\activate.bat
+        ```
+    - No Linux/Mac:
+        ```bash
+        source venv/bin/activate
+        ```
+
+## Instalação das Dependências
+
+Instale as dependências do projeto:
+```bash
 pip install -r requirements.txt
+```
+
+## Configuração do Banco de Dados
+
+Migre o banco de dados:
+```bash
+cd projeto
+python manage.py migrate
+```
+
+## Executando o Projeto
+
+Inicie o servidor de desenvolvimento:
+```bash
+python manage.py runserver
+```
+
+Isso iniciará o servidor local em http://127.0.0.1:8000/. Você pode acessar esta URL no seu navegador para visualizar o projeto em execução.
