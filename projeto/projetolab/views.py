@@ -1,6 +1,6 @@
 from django.shortcuts import render, redirect
 from django.http import HttpResponseRedirect
-from .models import Usuario, Projeto
+from .models import Usuario, Projeto, Pesquisador, Producao
 from django.urls import reverse
 from django.http import JsonResponse
 
@@ -19,6 +19,8 @@ def cadastro_usuario(request):
         tipo_usuario = request.POST.get('tipo_usuario')
         usuario = request.POST.get('usuario')
         senha = request.POST.get('senha')
+        lattes = request.POST.get('lattes')
+        projetos = request.POST.get('projetos')
 
         user_obj = Usuario()
 
@@ -30,6 +32,16 @@ def cadastro_usuario(request):
         user_obj.senha = senha
 
         user_obj.save()
+
+        if tipo_usuario == 'Pesquisador':
+            pesquisador_obj = Pesquisador()
+
+            pesquisador_obj.area_de_atuacao = area_de_atuacao
+            pesquisador_obj.lattes = lattes
+            pesquisador_obj.projetos = projetos
+            pesquisador_obj.usuario_fk = user_obj
+
+            pesquisador_obj.save()
 
         return HttpResponseRedirect(reverse('index') + '?success=true')
     
@@ -79,3 +91,27 @@ def cadastrar_projetos(request):
         projeto_obj.save()
 
         return HttpResponseRedirect(reverse('tela_usuario') + '?success=true')
+    
+def visualizar_pesquisadores(request):
+    pesquisadores = Pesquisador.objects.select_related('usuario_fk').all()
+    return render(request, 'visualizar_pesquisadores.html', {'pesquisadores': pesquisadores})
+
+def cadastrar_producao(request):
+    if request.method == 'POST':
+        tipo = request.POST.get('tipo')
+        data_inicio = request.POST.get('data_inicio')
+        desenvolvimento = request.POST.get('desenvolvimento')
+        autores_ids = request.POST.getlist('autores')
+
+        producao = Producao.objects.create(
+            tipo=tipo,
+            data_inicio=data_inicio,
+            desenvolvimento=desenvolvimento
+        )
+
+        producao.autores.set(autores_ids)
+
+        return render(request, 'sucesso.html', {'producao': producao})
+
+    pesquisadores = Pesquisador.objects.all()
+    return render(request, 'cadastro_producao.html', {'pesquisadores': pesquisadores})

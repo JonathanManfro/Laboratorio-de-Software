@@ -6,5 +6,7 @@ urlpatterns = [
     path('cadastrar_usuario/', views.cadastro_usuario, name='cadastrar_usuario'),
     path('login/', views.login_view, name='login_usuario'),
     path('tela_usuario/', views.tela_usuario, name='tela_usuario'),
-    path('cadastrar_projeto/', views.cadastrar_projetos, name='cadastrar_projeto')
+    path('cadastrar_projeto/', views.cadastrar_projetos, name='cadastrar_projeto'),
+    path('visualizar_pesquisadores/', views.visualizar_pesquisadores, name='visualizar_pesquisadores'),
+    path('cadastrar_producao/', views.cadastrar_producao, name='cadastrar_producao'),
 ]

@@ -32,14 +32,27 @@
                     <option value="Estudante">Estudante</option>
                 </select>
             </div>
+
+            <div id="pesquisadorCampos" style="display: none;">
+                <div class="form-group">
+                    <label for="lattes">Lattes:</label>
+                    <input type="text" class="form-control" id="lattes" name="lattes">
+                </div>
+                <div class="form-group">
+                    <label for="projetos">Projetos:</label>
+                    <input type="text" class="form-control" id="projetos" name="projetos">
+                </div>
+            </div>
+            
             <div class="form-group">
-                <label for="area_de_atuacao">Usuario:</label>
+                <label for="usuario">Usuario:</label>
                 <input type="text" class="form-control" id="usuario" name="usuario" required>
             </div>
             <div class="form-group">
-                <label for="area_de_atuacao">Senha:</label>
+                <label for="senha">Senha:</label>
                 <input type="text" class="form-control" id="senha" name="senha" required>
             </div>
+
             <button type="button" class="btn btn-primary" id="btnCadastrar">Cadastrar</button>
             <a href="/" class="btn btn-secondary">Voltar</a>
         </form>
@@ -48,6 +61,15 @@
     <script>
         document.getElementById("btnCadastrar").addEventListener("click", function() {
             document.getElementById("cadastroForm").submit();
+        });
+
+        document.getElementById("tipo_usuario").addEventListener("change", function() {
+            var pesquisadorCampos = document.getElementById("pesquisadorCampos");
+            if (this.value === "Pesquisador") {
+                pesquisadorCampos.style.display = "block";
+            } else {
+                pesquisadorCampos.style.display = "none";
+            }
         });
     </script>
 </body>
