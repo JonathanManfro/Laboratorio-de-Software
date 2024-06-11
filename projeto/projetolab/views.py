@@ -115,3 +115,13 @@ def cadastrar_producao(request):
 
     pesquisadores = Pesquisador.objects.all()
     return render(request, 'cadastro_producao.html', {'pesquisadores': pesquisadores})
+
+def visualizar_producoes(request):
+    pesquisador_id = request.POST.get('pesquisador_id')
+    pesquisador = Pesquisador.objects.get(id=pesquisador_id)
+    
+    producoes_do_pesquisador = Producao.objects.filter(autores=pesquisador)
+    
+    detalhes_das_producoes = producoes_do_pesquisador.values()
+
+    return render(request, 'visualizar_producoes.html', {'detalhes_das_producoes': detalhes_das_producoes})

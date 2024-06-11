@@ -62,12 +62,16 @@
                     <td>{{ pesquisador.area_de_atuacao }}</td>
                     <td>{{ pesquisador.lattes }}</td>
                     <td>{{ pesquisador.projetos }}</td>
-                    <td><a href="" class="">Visualizar Produções</a></td>
+                    <form method="post" action="{% url 'visualizar_producoes' %}">
+                        {% csrf_token %}
+                        <input type="hidden" name="pesquisador_id" value="{{ pesquisador.id }}">
+                        <td><button type="submit" class="btn btn-link">Visualizar Produções</button></td>
+                    </form>
                 </tr>
                 {% endfor %}
             </tbody>
         </table>
-        <a href="{% url 'index' %}" class="btn btn-custom">Voltar</a>
+        <a href="/tela_usuario" class="btn btn-custom">Voltar</a>
     </div>
 </body>
 </html>

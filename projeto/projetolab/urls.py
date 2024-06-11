@@ -9,4 +9,5 @@ urlpatterns = [
     path('cadastrar_projeto/', views.cadastrar_projetos, name='cadastrar_projeto'),
     path('visualizar_pesquisadores/', views.visualizar_pesquisadores, name='visualizar_pesquisadores'),
     path('cadastrar_producao/', views.cadastrar_producao, name='cadastrar_producao'),
+    path('visualizar_producoes/', views.visualizar_producoes, name='visualizar_producoes')
 ]
