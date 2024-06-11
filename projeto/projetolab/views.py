@@ -91,10 +91,15 @@ def cadastrar_projetos(request):
         projeto_obj.save()
 
         return HttpResponseRedirect(reverse('tela_usuario') + '?success=true')
-    
+        
 def visualizar_pesquisadores(request):
-    pesquisadores = Pesquisador.objects.select_related('usuario_fk').all()
-    return render(request, 'visualizar_pesquisadores.html', {'pesquisadores': pesquisadores})
+    pesquisadores = Pesquisador.objects.all()
+    
+    areas_de_atuacao = Pesquisador.objects.values_list('area_de_atuacao', flat=True)
+    
+    areas_de_atuacao_unicas = set(areas_de_atuacao)
+    
+    return render(request, 'visualizar_pesquisadores.html', {'pesquisadores': pesquisadores, 'areas_de_atuacao_unicas': areas_de_atuacao_unicas})
 
 def cadastrar_producao(request):
     if request.method == 'POST':

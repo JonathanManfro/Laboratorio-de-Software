@@ -1,6 +1,7 @@
 <!DOCTYPE html>
 <html lang="en">
 <head>
+    <script src="https://code.jquery.com/jquery-3.5.1.slim.min.js"></script>
     <meta charset="UTF-8">
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
     <title>Visualizar Pesquisadores</title>
@@ -43,6 +44,14 @@
 <body>
     <div class="container mt-5">
         <h2>Lista de Pesquisadores</h2>
+        <h3>
+            <select class="form-control" id="selectAreaAtuacao">
+                <option value="">Selecione a Área de Atuação</option>
+                {% for pesquisador in areas_de_atuacao_unicas %}
+                    <option value="{{ pesquisador }}">{{ pesquisador }}</option>
+                {% endfor %}
+            </select>
+        </h3>
         <table class="table table-bordered table-custom">
             <thead>
                 <tr>
@@ -74,4 +83,23 @@
         <a href="/tela_usuario" class="btn btn-custom">Voltar</a>
     </div>
 </body>
+<script>
+    $(document).ready(function () {
+        $('#selectAreaAtuacao').change(function () {
+            var areaSelecionada = $(this).val();
+            console.log(areaSelecionada);
+            if (areaSelecionada !== '') {
+                $('tbody tr').hide();
+                $('tbody tr').each(function () {
+                    var areaPesquisador = $(this).find('td:eq(2)').text(); // Índice 2 é a coluna da Área de Atuação
+                    if (areaPesquisador === areaSelecionada) {
+                        $(this).show();
+                    }
+                });
+            } else {
+                $('tbody tr').show();
+            }
+        });
+    });
+</script>
 </html>
