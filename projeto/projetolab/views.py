@@ -1,6 +1,6 @@
 from django.shortcuts import render, redirect
 from django.http import HttpResponseRedirect
-from .models import Usuario, Projeto, Pesquisador, Producao
+from .models import Usuario, Projeto, Pesquisador, Producao, AreaDePesquisa
 from django.urls import reverse
 from django.http import JsonResponse
 
@@ -130,3 +130,8 @@ def visualizar_producoes(request):
     detalhes_das_producoes = producoes_do_pesquisador.values()
 
     return render(request, 'visualizar_producoes.html', {'detalhes_das_producoes': detalhes_das_producoes})
+
+def visualizar_areas_de_pesquisa(request):
+    areas_de_pesquisa = AreaDePesquisa.objects.all()
+    nomes_areas_unicas = AreaDePesquisa.objects.values_list('nome_area', flat=True).distinct()
+    return render(request, 'visualizar_areas_de_pesquisa.html', {'areas_de_pesquisa': areas_de_pesquisa, 'nomes_areas_unicas': nomes_areas_unicas})
