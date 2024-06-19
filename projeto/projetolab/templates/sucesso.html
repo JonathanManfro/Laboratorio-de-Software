@@ -5,12 +5,17 @@
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
     <title>Sucesso</title>
     <link rel="stylesheet" href="https://maxcdn.bootstrapcdn.com/bootstrap/4.5.2/css/bootstrap.min.css">
+    <style>
+        body, html {
+            height: 100%;
+        }
+    </style>
 </head>
-<body>
+<body class="d-flex justify-content-center align-items-center">
     <div class="container mt-5">
-        <h2>Cadastro de Produção Realizado com Sucesso</h2>
-        <p>A produção <strong>{{ producao.tipo }}</strong> foi cadastrada com sucesso!</p>
-        <a href="/tela_usuario" class="btn btn-primary">Voltar</a>
+        <h2 class="text-center">Cadastro realizado com sucesso!</h2>
+        <p class="text-center">Seu cadastro foi realizado com sucesso! Clique no botão "Voltar" para retornar ao menu inicial.</p>
+        <a href="/tela_usuario" class="btn btn-primary d-block mx-auto" style="width: 90px;">Voltar</a>
     </div>
 </body>
 </html>

@@ -1,0 +1,95 @@
+<!DOCTYPE html>
+<html lang="pt-BR">
+<head>
+    <meta charset="UTF-8">
+    <title>Relações entre Pesquisadores</title>
+    <script src="https://cdn.jsdelivr.net/npm/chart.js"></script>
+    <style>
+        body, html {
+            height: 100%;
+            margin: 0;
+            display: flex;
+            justify-content: center;
+            align-items: center;
+            background-color: #ffffff;
+        }
+        .container {
+            max-width: 800px;
+            text-align: center;
+            padding: 20px;
+            background-color: #ffffff;
+            border-radius: 8px;
+            box-shadow: 0 0 10px rgba(0, 0, 0, 0.1);
+        }
+        .btn-voltar {
+            margin-top: 20px;
+            padding: 10px 20px;
+            background-color: #007bff;
+            color: #ffffff;
+            border: none;
+            border-radius: 4px;
+            cursor: pointer;
+            transition: background-color 0.3s ease;
+        }
+        .btn-voltar:hover {
+            background-color: #0056b3;
+        }
+    </style>
+</head>
+<body>
+    <div class="container">
+        <h1>Quantidade de relações que cada pesquiador possui</h1>
+        <canvas id="myChart" width="800" height="400"></canvas>
+        <button class="btn-voltar" onclick="window.history.back()">Voltar</button>
+    </div>
+
+    <script type="text/javascript">
+        const conexoes = JSON.parse('{{ conexoes_json|escapejs }}');
+
+        const pesquisadores = Object.keys(conexoes);
+        const dadosPesquisadores = pesquisadores.map(pesquisador => {
+            let totalProducoes = 0;
+            for (let outraPessoa in conexoes[pesquisador]) {
+                totalProducoes += conexoes[pesquisador][outraPessoa];
+            }
+            return {
+                pesquisador: pesquisador,
+                totalProducoes: totalProducoes
+            };
+        });
+
+        const ctx = document.getElementById('myChart').getContext('2d');
+        const myChart = new Chart(ctx, {
+            type: 'bar',
+            data: {
+                labels: dadosPesquisadores.map(item => item.pesquisador),
+                datasets: [{
+                    label: 'Quantidade de Produções em Comum',
+                    data: dadosPesquisadores.map(item => item.totalProducoes),
+                    backgroundColor: 'rgba(54, 162, 235, 0.5)',
+                    borderColor: 'rgba(54, 162, 235, 1)',
+                    borderWidth: 1
+                }]
+            },
+            options: {
+                scales: {
+                    y: {
+                        beginAtZero: true,
+                        ticks: {
+                            stepSize: 1
+                        }
+                    },
+                    x: {
+                        stacked: true
+                    }
+                },
+                plugins: {
+                    legend: {
+                        display: false
+                    }
+                }
+            }
+        });
+    </script>
+</body>
+</html>
