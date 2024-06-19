@@ -4,6 +4,7 @@ from .models import Usuario, Projeto, Pesquisador, Producao, AreaDePesquisa
 from django.urls import reverse
 from .forms import PesquisadorForm 
 from django.http import JsonResponse
+import json
 from .forms import PesquisadorForm
 
 def index(request):
@@ -92,7 +93,7 @@ def cadastrar_projetos(request):
 
         projeto_obj.save()
 
-        return HttpResponseRedirect(reverse('tela_usuario') + '?success=true')
+        return render(request, 'sucesso.html')
         
 def visualizar_pesquisadores(request):
     pesquisadores = Pesquisador.objects.all()
@@ -118,7 +119,7 @@ def cadastrar_producao(request):
 
         producao.autores.set(autores_ids)
 
-        return render(request, 'sucesso.html', {'producao': producao})
+        return render(request, 'sucesso.html')
 
     pesquisadores = Pesquisador.objects.all()
     return render(request, 'cadastro_producao.html', {'pesquisadores': pesquisadores})
@@ -157,3 +158,30 @@ def visualizar_perfil(request):
     nome_usuario = pesquisador.usuario_fk.nome
     
     return render(request, 'visualizar_perfil.html', {'pesquisador': pesquisador, 'form': form, 'nome_usuario': nome_usuario})
+
+def visualizar_relacoes_entre_pesquisadores(request):
+    pesquisadores = Pesquisador.objects.all()
+
+    conexoes = {}
+
+    for pesquisador in pesquisadores:
+        producoes_pesquisador = Producao.objects.filter(autores=pesquisador)
+
+        for outra_pessoa in pesquisadores:
+            if pesquisador != outra_pessoa:
+                producoes_outra_pessoa = Producao.objects.filter(autores=outra_pessoa)
+
+                producoes_em_comum = producoes_pesquisador.intersection(producoes_outra_pessoa)
+
+                if producoes_em_comum.exists():
+                    nome_pesquisador = pesquisador.usuario_fk.nome
+                    nome_outra_pessoa = outra_pessoa.usuario_fk.nome
+
+                    if nome_pesquisador not in conexoes:
+                        conexoes[nome_pesquisador] = {}
+
+                    conexoes[nome_pesquisador][nome_outra_pessoa] = producoes_em_comum.count()
+
+    conexoes_json = json.dumps(conexoes)
+
+    return render(request, 'visualizar_relacoes_entre_pesquisadores.html', {'conexoes_json': conexoes_json})
