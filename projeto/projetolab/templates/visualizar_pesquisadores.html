@@ -61,6 +61,7 @@
                     <th>Lattes</th>
                     <th>Projetos</th>
                     <th>Visualizar Produções</th>
+                    <th>Visualizar Perfil</th>
                 </tr>
             </thead>
             <tbody>
@@ -75,6 +76,10 @@
                         {% csrf_token %}
                         <input type="hidden" name="pesquisador_id" value="{{ pesquisador.id }}">
                         <td><button type="submit" class="btn btn-link">Visualizar Produções</button></td>
+                    </form>
+                    <form method="get" action="{% url 'visualizar_perfil' %}">
+                        <input type="hidden" name="pesquisador_id" value="{{ pesquisador.id }}">
+                        <td><button type="submit" class="btn btn-link">Visualizar Perfil</button></td>
                     </form>
                 </tr>
                 {% endfor %}
@@ -91,7 +96,7 @@
             if (areaSelecionada !== '') {
                 $('tbody tr').hide();
                 $('tbody tr').each(function () {
-                    var areaPesquisador = $(this).find('td:eq(2)').text(); // Índice 2 é a coluna da Área de Atuação
+                    var areaPesquisador = $(this).find('td:eq(2)').text(); 
                     if (areaPesquisador === areaSelecionada) {
                         $(this).show();
                     }

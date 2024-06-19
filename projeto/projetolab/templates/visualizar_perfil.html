@@ -1,0 +1,138 @@
+{% load static %}
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <script src="https://code.jquery.com/jquery-3.5.1.slim.min.js"></script>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Visualizar Perfil</title>
+    <link rel="stylesheet" href="https://maxcdn.bootstrapcdn.com/bootstrap/4.5.2/css/bootstrap.min.css">
+    <style>
+        .btn-custom {
+            text-decoration: none;
+            color: white;
+            background-color: #007BFF;
+            padding: 10px 20px;
+            margin: 5px 0;
+            border-radius: 5px;
+            transition: background-color 0.3s;
+        }
+
+        .btn-custom:hover {
+            background-color: #0056b3;
+        }
+
+        .table-custom th,
+        .table-custom td {
+            padding: 8px;
+            text-align: left;
+        }
+
+        .table-custom th {
+            background-color: #007BFF;
+            color: white;
+        }
+
+        .table-custom tr:nth-child(even) {
+            background-color: #f2f2f2;
+        }
+
+        .table-custom tr:hover {
+            background-color: #ddd;
+        }
+
+        .profile-img {
+            width: 100px;
+            height: 100px;
+            border-radius: 10px; /* Bordas levemente arredondadas */
+            object-fit: cover;
+            margin-bottom: 10px;
+        }
+
+        .edit-input {
+            border: none;
+            background-color: transparent;
+            width: 100%;
+            outline: none;
+        }
+
+        .btn-file {
+            position: relative;
+            overflow: hidden;
+            margin-top: 10px;
+        }
+
+        .btn-file input[type=file] {
+            position: absolute;
+            top: 0;
+            right: 0;
+            min-width: 100%;
+            min-height: 100%;
+            font-size: 100px;
+            text-align: right;
+            opacity: 0;
+            outline: none;
+            background: white;
+            cursor: inherit;
+            display: block;
+        }
+    </style>
+</head>
+<body>
+    <div class="container mt-5">
+        <h2>Perfil do Pesquisador</h2>
+        <form method="post" enctype="multipart/form-data">
+            {% csrf_token %}
+            <div class="row">
+                <div class="col-md-3">
+                    <div class="text-center">
+                        {% if pesquisador.imagem_perfil %}
+                            <img src="{{ pesquisador.imagem_perfil.url }}" alt="Imagem de Perfil" class="profile-img">
+                        {% else %}
+                            <!-- Caso não haja imagem de perfil, exibe a imagem "NoPhoto" -->
+                            <img src="{% static 'projetolab/perfil_pics/NoPhoto.png' %}" alt="NoPhoto" class="profile-img">
+                        {% endif %}
+                        <div class="btn-file">
+                            <label class="btn btn-custom">
+                                Editar <input type="file" style="display: none;" name="imagem_perfil">
+                            </label>
+                        </div>
+                        {% if pesquisador.imagem_perfil %}
+                            <button type="submit" name="clear_image" value="true" class="btn btn-danger mt-2">Limpar Imagem</button>
+                        {% endif %}
+                    </div>
+                </div>
+                <div class="col-md-9">
+                    <table class="table table-bordered table-custom">
+                        <tbody>
+                            <tr>
+                                <th style="width: 20%;">Nome:</th>
+                                <td>{{ nome_usuario }}</td>
+                            </tr>
+                            <tr>
+                                <th>Email:</th>
+                                <td><input type="email" name="email" value="{{ pesquisador.usuario_fk.email }}" class="edit-input" readonly></td>
+                            </tr>
+                            <tr>
+                                <th>Área de Atuação:</th>
+                                <td><input type="text" name="area_de_atuacao" value="{{ pesquisador.area_de_atuacao }}" class="edit-input"></td>
+                            </tr>
+                            <tr>
+                                <th>Lattes:</th>
+                                <td><input type="text" name="lattes" value="{{ pesquisador.lattes }}" class="edit-input"></td>
+                            </tr>
+                            <tr>
+                                <th>Projetos:</th>
+                                <td><input type="text" name="projetos" value="{{ pesquisador.projetos }}" class="edit-input"></td>
+                            </tr>
+                            <!-- Adicione mais linhas conforme necessário para outros campos -->
+                        </tbody>
+                    </table>
+                    <button type="submit" class="btn btn-custom">Salvar</button>
+                    <a href="{% url 'visualizar_pesquisadores' %}" class="btn btn-custom">Voltar</a>
+                </div>
+            </div>
+        </form>
+    </div>
+</body>
+</html>

@@ -1,8 +1,10 @@
-from django.shortcuts import render, redirect
+from django.shortcuts import render, redirect, get_object_or_404
 from django.http import HttpResponseRedirect
 from .models import Usuario, Projeto, Pesquisador, Producao, AreaDePesquisa
 from django.urls import reverse
+from .forms import PesquisadorForm 
 from django.http import JsonResponse
+from .forms import PesquisadorForm
 
 def index(request):
     return render(request, 'index.html')
@@ -135,3 +137,23 @@ def visualizar_areas_de_pesquisa(request):
     areas_de_pesquisa = AreaDePesquisa.objects.all()
     nomes_areas_unicas = AreaDePesquisa.objects.values_list('nome_area', flat=True).distinct()
     return render(request, 'visualizar_areas_de_pesquisa.html', {'areas_de_pesquisa': areas_de_pesquisa, 'nomes_areas_unicas': nomes_areas_unicas})
+
+def visualizar_perfil(request):
+    pesquisador_id = request.GET.get('pesquisador_id')
+    pesquisador = Pesquisador.objects.select_related('usuario_fk').get(id=pesquisador_id)
+    
+    if request.method == 'POST':
+        form = PesquisadorForm(request.POST, request.FILES, instance=pesquisador)
+        if 'clear_image' in request.POST:
+            pesquisador.imagem_perfil = None
+            pesquisador.save()
+            return redirect(request.path_info + f"?pesquisador_id={pesquisador_id}")
+        elif form.is_valid():
+            form.save()
+            return redirect('/visualizar_pesquisadores')
+    else:
+        form = PesquisadorForm(instance=pesquisador)
+    
+    nome_usuario = pesquisador.usuario_fk.nome
+    
+    return render(request, 'visualizar_perfil.html', {'pesquisador': pesquisador, 'form': form, 'nome_usuario': nome_usuario})

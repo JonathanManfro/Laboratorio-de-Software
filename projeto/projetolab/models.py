@@ -41,6 +41,7 @@ class Pesquisador(models.Model):
     lattes = models.CharField(max_length=255)
     projetos = models.CharField(max_length=255)
     usuario_fk = models.ForeignKey('Usuario', on_delete=models.CASCADE)
+    imagem_perfil = models.ImageField(upload_to='perfil_pics/', blank=True, null=True)
 
 class Producao(models.Model):
     id = models.AutoField(primary_key=True)
