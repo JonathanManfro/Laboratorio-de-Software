@@ -13,7 +13,7 @@ urlpatterns = [
     path('cadastrar_producao/', views.cadastrar_producao, name='cadastrar_producao'),
     path('visualizar_producoes/', views.visualizar_producoes, name='visualizar_producoes'),
     path('visualizar_areas_de_pesquisa/', views.visualizar_areas_de_pesquisa, name='visualizar_areas_de_pesquisa'),
-    path('visualizar_relacoes_entre_pesquisadores/', views.visualizar_relacoes_entre_pesquisadores, name='visualizar_relacoes_entre_pesquisadores')
+    path('visualizar_relacoes_entre_pesquisadores/', views.visualizar_relacoes_entre_pesquisadores, name='visualizar_relacoes_entre_pesquisadores'),
     path('visualizar_perfil/', views.visualizar_perfil, name='visualizar_perfil'),
 ] + static(settings.MEDIA_URL, document_root=settings.MEDIA_ROOT)
 
