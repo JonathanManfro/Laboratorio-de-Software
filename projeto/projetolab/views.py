@@ -25,6 +25,9 @@ def cadastro_usuario(request):
         lattes = request.POST.get('lattes')
         projetos = request.POST.get('projetos')
 
+        if Usuario.objects.filter(usuario=usuario).exists():
+            return render(request, 'cadastro_usuarios.html', {'error_message': 'Este nome de usuário já existe. Tente novamente.'})
+
         user_obj = Usuario()
 
         user_obj.nome = nome

@@ -11,6 +11,11 @@
         <h2>Cadastro de Usuário</h2>
         <form id="cadastroForm" method="post">
             {% csrf_token %}
+            {% if error_message %}
+                <div class="alert alert-danger" role="alert">
+                {{ error_message }}
+                </div>
+            {% endif %}
             <div class="form-group">
                 <label for="nome">Nome:</label>
                 <input type="text" class="form-control" id="nome" name="nome" required>
@@ -50,7 +55,9 @@
             </div>
             <div class="form-group">
                 <label for="senha">Senha:</label>
-                <input type="text" class="form-control" id="senha" name="senha" required>
+                <div class="input-group">
+                    <input type="password" class="form-control" id="senha" name="senha" required>
+                </div>
             </div>
 
             <button type="button" class="btn btn-primary" id="btnCadastrar">Cadastrar</button>
@@ -69,6 +76,17 @@
                 pesquisadorCampos.style.display = "block";
             } else {
                 pesquisadorCampos.style.display = "none";
+            }
+        });
+
+        $('.toggle-password').click(function() {
+            $(this).toggleClass('fa-eye fa-eye-slash');
+            
+            var input = $('#senha');
+            if (input.attr('type') === 'password') {
+                input.attr('type', 'text');
+            } else {
+                input.attr('type', 'password');
             }
         });
     </script>
