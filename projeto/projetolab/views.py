@@ -146,23 +146,27 @@ def visualizar_areas_de_pesquisa(request):
 
 def visualizar_perfil(request):
     pesquisador_id = request.GET.get('pesquisador_id')
-    pesquisador = Pesquisador.objects.select_related('usuario_fk').get(id=pesquisador_id)
-    request.session['pesquisador_id'] = pesquisador_id
-    
+    pesquisador = get_object_or_404(Pesquisador, id=pesquisador_id)
+
     if request.method == 'POST':
         form = PesquisadorForm(request.POST, request.FILES, instance=pesquisador)
         if 'clear_image' in request.POST:
             pesquisador.imagem_perfil = None
             pesquisador.save()
             return redirect(request.path_info + f"?pesquisador_id={pesquisador_id}")
-        elif form.is_valid():
-            form.save()
-            return redirect('/visualizar_pesquisadores')
+        elif 'imagem_perfil' in request.FILES:
+            if form.is_valid():
+                form.save()
+                return redirect(request.path_info + f"?pesquisador_id={pesquisador_id}")
+        elif 'save' in request.POST:
+            if form.is_valid():
+                form.save()
+                return redirect('visualizar_pesquisadores')
     else:
         form = PesquisadorForm(instance=pesquisador)
-    
+
     nome_usuario = pesquisador.usuario_fk.nome
-    
+
     return render(request, 'visualizar_perfil.html', {'pesquisador': pesquisador, 'form': form, 'nome_usuario': nome_usuario})
 
 def visualizar_relacoes_entre_pesquisadores(request):

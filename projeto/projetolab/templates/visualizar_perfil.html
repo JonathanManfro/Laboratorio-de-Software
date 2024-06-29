@@ -61,7 +61,7 @@
             overflow: hidden;
             margin-top: 10px;
         }
-
+        
         .btn-file input[type=file] {
             position: absolute;
             top: 0;
@@ -77,6 +77,13 @@
             display: block;
         }
     </style>
+    <script>
+        $(document).ready(function() {
+            $('input[type="file"]').on('change', function() {
+                $(this).closest('form').submit();
+            });
+        });
+    </script>
 </head>
 <body>
     <div class="container mt-5">
@@ -134,7 +141,7 @@
                     </div>
                     <div class="row">
                         <div class="col">
-                            <button type="submit" class="btn btn-custom">Salvar</button>
+                            <button type="submit" name="save" class="btn btn-custom">Salvar</button>
                             <a href="{% url 'visualizar_pesquisadores' %}" class="btn btn-custom">Voltar</a>
                         </div>
                     </div>
