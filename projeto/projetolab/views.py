@@ -1,11 +1,13 @@
 from django.shortcuts import render, redirect, get_object_or_404
 from django.http import HttpResponseRedirect
-from .models import Usuario, Projeto, Pesquisador, Producao, AreaDePesquisa
+from .models import Usuario, Projeto, Pesquisador, Producao, AreaDePesquisa, CaptacaoRecurso
 from django.urls import reverse
 from .forms import PesquisadorForm 
 from django.http import JsonResponse
 import json
 from .forms import PesquisadorForm
+from decimal import Decimal
+from django.db.models import Sum
 
 def index(request):
     return render(request, 'index.html')
@@ -145,6 +147,7 @@ def visualizar_areas_de_pesquisa(request):
 def visualizar_perfil(request):
     pesquisador_id = request.GET.get('pesquisador_id')
     pesquisador = Pesquisador.objects.select_related('usuario_fk').get(id=pesquisador_id)
+    request.session['pesquisador_id'] = pesquisador_id
     
     if request.method == 'POST':
         form = PesquisadorForm(request.POST, request.FILES, instance=pesquisador)
@@ -188,3 +191,45 @@ def visualizar_relacoes_entre_pesquisadores(request):
     conexoes_json = json.dumps(conexoes)
 
     return render(request, 'visualizar_relacoes_entre_pesquisadores.html', {'conexoes_json': conexoes_json})
+
+def criar_captacao_recurso(request):
+    pesquisador_id = int(request.session.get('pesquisador_id'))
+    pesquisador = Pesquisador.objects.get(id=pesquisador_id)
+    producoes = Producao.objects.all()
+
+    if request.method == 'POST':
+        producao_id = request.POST.get('producao')
+        recurso_captado = request.POST.get('recurso_captado')
+        pesquisador_id = int(request.session.get('pesquisador_id'))
+        
+        if producao_id and recurso_captado and pesquisador_id:
+            producao = Producao.objects.get(id=producao_id)
+            pesquisador = Pesquisador.objects.get(id=pesquisador_id)
+            valor = Decimal(recurso_captado)
+
+            captacao = CaptacaoRecurso(
+                pesquisador=pesquisador,
+                producao=producao,
+                valor=valor
+            )
+            captacao.save()
+
+            return render(request, "sucesso.html")
+
+    context = {
+        'pesquisador': pesquisador,
+        'producoes': producoes,
+    }
+    return render(request, 'criar_captacao_recurso.html', context)
+
+def visualizar_captacoes_recurso(request):
+    pesquisador_id = int(request.session.get('pesquisador_id'))
+    captacoes = CaptacaoRecurso.objects.filter(pesquisador__id=pesquisador_id)
+    
+    producoes = Producao.objects.filter(captacaorecurso__in=captacoes).annotate(total_recurso=Sum('captacaorecurso__valor'))
+
+    context = {
+        'producoes': producoes,
+        'pesquisador_id': pesquisador_id
+    }
+    return render(request, 'visualizar_captacao_recurso.html', context)

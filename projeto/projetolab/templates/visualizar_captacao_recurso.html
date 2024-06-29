@@ -1,0 +1,41 @@
+<!DOCTYPE html>
+<html lang="pt-br">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Produções do Pesquisador</title>
+    <link rel="stylesheet" href="https://stackpath.bootstrapcdn.com/bootstrap/4.5.2/css/bootstrap.min.css">
+    <style>
+    .card {
+        transition: transform 0.3s;
+    }
+    .card:hover {
+        transform: translateY(-5px);
+    }
+    .card-title {
+        color: #333;
+    }
+    .card-text {
+        color: #666;
+    }
+    </style>
+</head>
+<body>
+<div class="container mt-5">
+    <h2 class="text-center mb-4">Captações de Recursos por Produção</h2>
+    <div class="row">
+        {% for producao in producoes %}
+        <div class="col-md-4 mb-4">
+            <div class="card h-100 shadow">
+                <div class="card-body">
+                    <h5 class="card-title">{{ producao.tipo }}</h5>
+                    <p class="card-text"><strong>Total de Recursos Captados:</strong> R$ {{ producao.total_recurso }}</p>
+                </div>
+            </div>
+        </div>
+        {% endfor %}
+    </div>
+    <a href="/visualizar_pesquisadores" class="btn btn-primary mt-4">Voltar</a>
+</div>
+</body>
+</html>

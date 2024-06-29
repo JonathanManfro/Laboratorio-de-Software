@@ -49,3 +49,8 @@ class Producao(models.Model):
     data_inicio = models.DateField()
     autores = models.ManyToManyField(Pesquisador)
     desenvolvimento = models.TextField()
+
+class CaptacaoRecurso(models.Model):
+    pesquisador = models.ForeignKey('Pesquisador', on_delete=models.CASCADE)
+    producao = models.ForeignKey('Producao', on_delete=models.CASCADE)
+    valor = models.DecimalField(max_digits=10, decimal_places=2)

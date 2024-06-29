@@ -15,5 +15,7 @@ urlpatterns = [
     path('visualizar_areas_de_pesquisa/', views.visualizar_areas_de_pesquisa, name='visualizar_areas_de_pesquisa'),
     path('visualizar_relacoes_entre_pesquisadores/', views.visualizar_relacoes_entre_pesquisadores, name='visualizar_relacoes_entre_pesquisadores'),
     path('visualizar_perfil/', views.visualizar_perfil, name='visualizar_perfil'),
+    path('criar-captacao-recurso/', views.criar_captacao_recurso, name='criar_captacao_recurso'),
+    path('visualizar-captacoes-recurso/', views.visualizar_captacoes_recurso, name='visualizar_captacoes_recurso'),
 ] + static(settings.MEDIA_URL, document_root=settings.MEDIA_ROOT)
 

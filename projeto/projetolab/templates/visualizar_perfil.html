@@ -44,7 +44,7 @@
         .profile-img {
             width: 100px;
             height: 100px;
-            border-radius: 10px; /* Bordas levemente arredondadas */
+            border-radius: 10px;
             object-fit: cover;
             margin-bottom: 10px;
         }
@@ -89,7 +89,6 @@
                         {% if pesquisador.imagem_perfil %}
                             <img src="{{ pesquisador.imagem_perfil.url }}" alt="Imagem de Perfil" class="profile-img">
                         {% else %}
-                            <!-- Caso não haja imagem de perfil, exibe a imagem "NoPhoto" -->
                             <img src="{% static 'projetolab/perfil_pics/NoPhoto.png' %}" alt="NoPhoto" class="profile-img">
                         {% endif %}
                         <div class="btn-file">
@@ -125,11 +124,20 @@
                                 <th>Projetos:</th>
                                 <td><input type="text" name="projetos" value="{{ pesquisador.projetos }}" class="edit-input"></td>
                             </tr>
-                            <!-- Adicione mais linhas conforme necessário para outros campos -->
                         </tbody>
                     </table>
-                    <button type="submit" class="btn btn-custom">Salvar</button>
-                    <a href="{% url 'visualizar_pesquisadores' %}" class="btn btn-custom">Voltar</a>
+                    <div class="row mb-3">
+                        <div class="col">
+                            <a href="{% url 'criar_captacao_recurso' %}?pesquisador_id={{ pesquisador.id }}" class="btn btn-custom">Criar Captação de Recurso</a>
+                            <a href="{% url 'visualizar_captacoes_recurso' %}" class="btn btn-custom">Visualizar Captações de Recurso</a>
+                        </div>
+                    </div>
+                    <div class="row">
+                        <div class="col">
+                            <button type="submit" class="btn btn-custom">Salvar</button>
+                            <a href="{% url 'visualizar_pesquisadores' %}" class="btn btn-custom">Voltar</a>
+                        </div>
+                    </div>
                 </div>
             </div>
         </form>
