@@ -16,9 +16,10 @@ def main():
             "forget to activate a virtual environment?"
         ) from exc
     execute_from_command_line(sys.argv)
-    from scripts.populate_tables import create_admin_user, populate_area_de_pesquisa
-    create_admin_user()
-    populate_area_de_pesquisa()
+    if 'test' not in sys.argv:
+        from scripts.populate_tables import create_admin_user, populate_area_de_pesquisa
+        create_admin_user()
+        populate_area_de_pesquisa()
 
 
 if __name__ == '__main__':
