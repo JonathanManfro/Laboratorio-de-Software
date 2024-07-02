@@ -165,6 +165,8 @@ def visualizar_perfil(request):
     else:
         form = PesquisadorForm(instance=pesquisador)
 
+    request.session['pesquisador_id'] = pesquisador_id
+
     nome_usuario = pesquisador.usuario_fk.nome
 
     return render(request, 'visualizar_perfil.html', {'pesquisador': pesquisador, 'form': form, 'nome_usuario': nome_usuario})
